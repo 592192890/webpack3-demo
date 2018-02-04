@@ -10,7 +10,7 @@ module.exports={
     output:{
         path:path.resolve(__dirname,'./dist'),
         publicPath: '/dist/',
-        filename: '[name]-[hash].js'
+        filename: '[name].js'
     },
     module:{
         rules:[
@@ -25,7 +25,8 @@ module.exports={
     },
     devServer: {
         historyApiFallback: true,
-        noInfo: true
+        noInfo: true,
+        port:7000,//端口
     },
     devtool: '#eval-source-map'
 
@@ -35,7 +36,7 @@ module.exports.plugins = (module.exports.plugins || []).concat([
     //设置变量
     new webpack.DefinePlugin({
         'process.env': {
-            NODE_ENV: '"production"'
+            NODE_ENV: '"development"'
         }
     }),
     //压缩代码
