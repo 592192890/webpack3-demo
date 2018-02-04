@@ -10,7 +10,7 @@ module.exports={
     output:{
         path:path.resolve(__dirname,'./dist'),
         publicPath: '/dist/',
-        filename: '[name].js'
+        filename: process.env=='development'?'[name].js':'[name]-[chunkhash].js'
     },
     module:{
         rules:[
