@@ -1,16 +1,17 @@
 var path=require('path');
 var webpack=require('webpack');
-var HtmlWebpackPlugin=require('html-webpack-plugin')
+var HtmlWebpackPlugin=require('html-webpack-plugin');
+var ExtractTextPlugin=require('extract-text-webpack-plugin');
 module.exports={
     //多入口
     entry:{
         'build':'./index.js',
-        'vendor':['lodash']
+        'vendor':['lodash','jquery']
     },
     output:{
         path:path.resolve(__dirname,'./dist'),
         publicPath: '/dist/',
-        filename: process.env=='development'?'[name].js':'[name]-[chunkhash].js'
+        filename: '[name]-[chunkhash].js'
     },
     module:{
         rules:[
@@ -20,12 +21,30 @@ module.exports={
                 use: {
                     loader: 'babel-loader'
                 }
+            },
+            {
+                test: /\.(scss|sass|css)$/,  // pack sass and css files
+                loader: ExtractTextPlugin.extract({
+                    fallback: "style-loader", 
+                    use: [
+                    { 
+                        loader: 'css-loader',
+                        options:{
+                            minimize: true //css压缩
+                        }
+                    },
+                    {
+                        loader: 'postcss-loader',
+                    },
+                    'sass-loader'
+                    ]
+                })
             }
         ]
     },
     devServer: {
         historyApiFallback: true,
-        noInfo: true,
+        noInfo: false,
         port:7000,//端口
     },
     devtool: '#eval-source-map'
@@ -45,10 +64,14 @@ module.exports.plugins = (module.exports.plugins || []).concat([
             warnings: false
         }
     }),
+    //抽离css
+    new ExtractTextPlugin({
+        filename: 'css/[name]-[contenthash].css',
+    }),
     //提取公共代码
     new webpack.optimize.CommonsChunkPlugin({
         name:'vendor', // 注意不要.js后缀
-        chunks:['vendor']
+        chunks:['build','vendor','jquery']
     }),
     //生成默认的index.html
     new HtmlWebpackPlugin(), 

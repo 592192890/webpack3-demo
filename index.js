@@ -1,20 +1,14 @@
-import lodash from 'lodash'
-class History{
-    constructor(){
-        console.log('aaa:'+process.env.NODE_ENV)
-        console.log('bbb:'+lodash)
-    }
-    sayHell(name){
-        console.log('hello '+name)
+import _ from 'lodash';
+import $ from 'jquery';
+import Main1 from './src/assets/js/main1.js';
+import Main2 from './src/assets/js/main2.js';
+import './src/assets/sass/index.scss';
+
+class App{
+    sayHello(){
+        console.log('Hello App!')
     }
 }
-
-class HashHistory extends History{
-    constructor(){
-        super()
-    }
-}
-var a=new HashHistory();
-a.sayHell('world!');
-
-module.exports=HashHistory;
+new Main1().sayHelloMain1();
+new Main2().sayHelloMain2();
+module.exports=App;
