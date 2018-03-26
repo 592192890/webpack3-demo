@@ -9,9 +9,9 @@ module.exports={
         'vendor':['lodash','jquery']
     },
     output:{
-        path:path.resolve(__dirname,'./dist'),
-        publicPath: '/dist/',
-        filename: '[name]-[chunkhash].js'
+        path:path.resolve(__dirname,'../dist'),
+        publicPath: '/',
+        filename: '[name]-[hash].js'
     },
     module:{
         rules:[
@@ -46,6 +46,7 @@ module.exports={
         historyApiFallback: true,
         noInfo: false,
         port:7000,//端口
+        contentBase: path.join(__dirname, "../dist")
     },
     devtool: '#eval-source-map'
 
@@ -53,11 +54,11 @@ module.exports={
 
 module.exports.plugins = (module.exports.plugins || []).concat([
     //设置变量
-    new webpack.DefinePlugin({
-        'process.env': {
-            NODE_ENV: '"development"'
-        }
-    }),
+    // new webpack.DefinePlugin({
+    //     'process.env': {
+    //         NODE_ENV: '"development"'
+    //     }
+    // }),
     //压缩代码
     new webpack.optimize.UglifyJsPlugin({
         compress: {
@@ -74,5 +75,9 @@ module.exports.plugins = (module.exports.plugins || []).concat([
         chunks:['build','vendor','jquery']
     }),
     //生成默认的index.html
-    new HtmlWebpackPlugin(), 
+    new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: 'index.html',
+        inject: true
+      }), 
 ])
